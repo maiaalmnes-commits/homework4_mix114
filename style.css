@@ -20,5 +20,26 @@ body {
 .cocktail img {
   max-width: 250px;
   display: block;
+  margin-top: 25px;
+}
+
+#mealName {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  display: inline;
+  border-bottom: 2px solid #000;
+}
+#mealCategory {
+  font-style: italic;
+  color: #444;
+}
+#ingrediensTitle {
+  font-weight: bold;
+  margin-top: 20px;
+}
+#mealIngredients {
   margin-top: 10px;
+  list-style-type: square;
+  list-style-position: inside;
+  padding-left: 0;
 }
