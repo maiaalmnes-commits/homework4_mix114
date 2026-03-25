@@ -17,6 +17,7 @@ const mealCategoryToCocktailIngredient = {
   Breakfast: "vodka",
   Goat: "whiskey",
   Vegan: "rum",
+  default: "cola"
   // Add more if needed; otherwise default to something like 'cola'
 };
 
@@ -87,7 +88,7 @@ Looks up category in our map, or defaults to 'cola'
 */
 function mapMealCategoryToDrinkIngredient(category) {
   if (!category) return "cola";
-  return mealCategoryToCocktailIngredient[category] || "cola";
+  return mealCategoryToCocktailIngredient[category] || mealCategoryToCocktailIngredient.default;
 }
 
 /*

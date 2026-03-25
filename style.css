@@ -4,6 +4,7 @@ body {
   grid-template-rows: 100px auto;
   font-family: sans-serif;
   margin: 20px;
+  background-color: #fff;
 }
 #title {
   grid-column: span 2;
