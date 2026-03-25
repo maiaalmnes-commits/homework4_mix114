@@ -48,8 +48,13 @@ function init() {
  Fetch a Random Meal from TheMealDB
  Returns a Promise that resolves with the meal object
  */
-function fetchRandomMeal() {
-    // Fill in
+async function fetchRandomMeal() {
+  const response = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
+  const data = await response.json();
+  
+  console.log(data);
+
+  return data.meals[0];
 }
 
 /*
@@ -59,7 +64,21 @@ Receives a meal object with fields like:
   strIngredientX, strMeasureX, etc.
 */
 function displayMealData(meal) {
-    // Fill in
+    document.getElementById("mealName").textContent = meal.strMeal;
+    document.getElementById("mealImage").src = meal.strMealThumb;
+    document.getElementById("mealCategory").textContent = meal.strCategory;
+    const ingredientList = document.getElementById("mealIngredients");
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+
+        if (ingredient && ingredient.trim() !== "") {
+            const list = document.createElement("li");
+            list.textContent = `${measure} ${ingredient}`;
+            ingredientList.appendChild(list);
+        }
+    }
+    document.getElementById("mealInstructions").innerHTML = meal.strInstructions.replace(/\r?\n/g, "<br><br>");
 }
 
 /*
