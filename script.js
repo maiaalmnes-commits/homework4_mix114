@@ -69,6 +69,7 @@ function displayMealData(meal) {
     document.getElementById("mealImage").src = meal.strMealThumb;
     document.getElementById("mealCategory").textContent = meal.strCategory;
     const ingredientList = document.getElementById("mealIngredients");
+    ingredientList.innerHTML = "";
     for (let i = 1; i <= 20; i++) {
         const ingredient = meal[`strIngredient${i}`];
         const measure = meal[`strMeasure${i}`];
@@ -98,24 +99,68 @@ We call https://www.thecocktaildb.com/api/json/v1/1/search.php?s=DRINK_INGREDIEN
 Don't forget encodeURIComponent()
 If no cocktails found, fetch random
 */
-function fetchCocktailByDrinkIngredient(drinkIngredient) {
-    // Fill in
+async function fetchCocktailByDrinkIngredient(drinkIngredient) {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${encodeURIComponent(drinkIngredient)}`)
+  const data = await response.json();
+  console.log(data);
+  
+  if (data.drinks && data.drinks.length > 0) {
+    return data.drinks[0]; 
+  } else {
+    return await fetchRandomCocktail(); 
+  }
 }
 
 /*
 Fetch a Random Cocktail (backup in case nothing is found by the search)
 Returns a Promise that resolves to cocktail object
 */
-function fetchRandomCocktail() {
-    // Fill in
+async function fetchRandomCocktail() {
+    const response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/random.php");
+    const data = await response.json();
+    console.log(data);
+    return data.drinks[0];
 }
 
 /*
 Display Cocktail Data in the DOM
 */
 function displayCocktailData(cocktail) {
-    // Fill in
+    const coctailContainer = document.getElementById("cocktail-container");
+    coctailContainer.innerHTML = ""; 
+    
+    const title = document.createElement("h2");
+    title.textContent = cocktail.strDrink;
+    
+    const image = document.createElement("img");
+    image.src = cocktail.strDrinkThumb;
+    image.alt = cocktail.strDrink;
+    
+    const category = document.createElement("p");
+    category.textContent = `Category: ${cocktail.strCategory}`;
+    
+    const instructions = document.createElement("p");
+    instructions.innerHTML = cocktail.strInstructions.replace(/\r?\n/g, "<br><br>");
+    
+    const ingredientList = document.createElement("ul");
+    for (let i = 1; i <= 15; i++) {
+        const ingredient = cocktail[`strIngredient${i}`];
+        const measure = cocktail[`strMeasure${i}`];
+        
+        if (ingredient && ingredient.trim() !== "") {
+            const listItem = document.createElement("li");
+            listItem.textContent = `${measure || ""} ${ingredient}`;
+            ingredientList.appendChild(listItem);
+        }
+    }
+    
+    coctailContainer.appendChild(title);
+    coctailContainer.appendChild(image);
+    coctailContainer.appendChild(category);
+    coctailContainer.appendChild(instructions);
+    coctailContainer.appendChild(ingredientList);
 }
+
 
 /*
 Call init() when the page loads
